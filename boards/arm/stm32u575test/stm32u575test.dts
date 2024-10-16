@@ -87,7 +87,7 @@
 
 / {
 	model = "STM32U5 test (stm32)";
-	compatible = "st,stm32u575";
+	compatible = "st,stm32u575", "st,stm32u5";
 
 	chosen {
 		zephyr,sram = &sram0;

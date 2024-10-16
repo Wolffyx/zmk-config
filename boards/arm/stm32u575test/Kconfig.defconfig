@@ -3,7 +3,7 @@
 # Copyright (c) 2020 The ZMK Contributors
 # SPDX-License-Identifier: MIT
 
-if stm32u575test
+if BOARD_STM32U575TEST
 
 config BOARD
     default "stm32u575test"
