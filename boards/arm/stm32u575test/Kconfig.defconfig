@@ -1,0 +1,21 @@
+# DZ60RGB keyboard configuration
+
+# Copyright (c) 2020 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+if stm32u575test
+
+config BOARD
+    default "stm32u575test"
+
+config ZMK_KEYBOARD_NAME
+    default "STM32U575 Board"
+
+config ZMK_USB
+    default y
+
+config ZMK_KSCAN_MATRIX_POLLING
+    default y
+
+
+endif # stm32u575test

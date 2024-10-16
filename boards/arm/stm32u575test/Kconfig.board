@@ -1,0 +1,3 @@
+config BOARD_STM32U575TEST
+    bool "My Custom STM32U575 Board"
+    depends on SOC_STM32U575XX

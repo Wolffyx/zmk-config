@@ -1,0 +1,24 @@
+identifier: stm32u575test
+id: stm32u575test
+name: stm32u575test
+type: board
+arch: arm
+features:
+  - keys
+outputs:
+  - usb
+#toolchain:
+#  - zephyr
+#  - gnuarmemb
+#  - xtools
+#ram: 2000
+#supported:
+#  - gpio
+#  - i2c
+#  - counter
+#  - spi
+#  - usb_device
+#  - lsm303dlhc
+#  - nvs
+#  - can
+#  - kscan

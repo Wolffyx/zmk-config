@@ -18,5 +18,8 @@
 #
 ---
 include:
-  - board: blackpill_f401cc
-    shield: two_percent_milk
+  - board: stm32u575test
+  - board: stm32u585test
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
+#    artifact-name: stm32u585test_studio
