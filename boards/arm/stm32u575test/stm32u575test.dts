@@ -4,80 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
-///dts-v1/;
-//#include <st/u5/stm32u575.dtsi>
-//
-//#include <dt-bindings/zmk/matrix_transform.h>
-//
-/// {
-//	model = "stm32u575test";
-//	compatible = "st,stm32u575";
-//
-//	chosen {
-//		// zephyr,sram = &sram0;
-//		// zephyr,flash = &flash0;
-//		zmk,kscan = &kscan0;
-//		zmk,matrix-transform = &default_transform;
-//	};
-//
-//	transform: transform {
-//		compatible = "zmk,matrix-transform";
-//		columns = <3>;
-//		rows = <4>;
-//		map = <
-//					  RC(0, 0) RC(0, 1) RC(0, 2)
-//					  RC(1, 0) RC(1, 1) RC(1, 2)
-//					  RC(2, 0) RC(2, 1) RC(2, 2)
-//					  RC(3, 0) RC(3, 1) RC(3, 2)
-//			  >;
-//	};
-//
-//	kscan: kscan {
-//		compatible = "zmk,kscan-gpio-matrix";
-//		diode-direction = "col2row";
-//		row-gpios
-//		= <&gpioe 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-//		, <&gpioe 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-//		, <&gpioe 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-//		, <&gpiob 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-//		;
-//		col-gpios
-//		= <&gpioe 10 GPIO_ACTIVE_HIGH>
-//		, <&gpioe 11 GPIO_ACTIVE_HIGH>
-//		, <&gpioe 12 GPIO_ACTIVE_HIGH>
-//		;
-//	};
-//
-//};
-
-// zephyr_udc0: &usb {
-//     status = "okay";
-// };
-
-// &flash0 {
-//     /*
-//      * For more information, see:
-//      * http://docs.zephyrproject.org/latest/guides/dts/index.html#flash-partitions
-//      */
-//     partitions {
-//         compatible = "fixed-partitions";
-//         #address-cells = <1>;
-//         #size-cells = <1>;
-
-//         /* Set 6Kb of storage at the end of the 256Kb of flash */
-//         storage_partition: partition@3e800 {
-//             reg = <0x0003e800 0x00001800>;
-//         };
-//     };
-// };
-
-
-/*
- * Copyright (c) 2020 The ZMK Contributors
- *
- * SPDX-License-Identifier: MIT
- */
 /dts-v1/;
+
 #include <mem.h>
 // #include <st/u5/stm32u575vg.dtsi>
 #include "stm32u575vg.dtsi"
@@ -96,7 +24,7 @@
 		zephyr,flash = &flash0;
 		zmk,kscan = &kscan;
 		zmk,matrix_transform = &transform;
-		// zephyr,console = &cdc_acm_uart;
+		zephyr,console = &usart2;
 		/* TODO: Enable once we support the IC for underglow
 		zmk,underglow = &led_strip;
 		 */
@@ -131,6 +59,17 @@
 	};
 };
 
+
+// &clk_hsi48 {
+// 	status = "okay";
+// };
+
+&clk_lse {
+	status = "okay";
+};
+&clk_hse {
+	clock-frequency = <DT_FREQ_M(48)>;
+};
 
 &clk_msis {
 	status = "okay";
@@ -172,6 +111,11 @@
 	clock-frequency = <I2C_BITRATE_FAST>;
 };
 
+zephyr_udc0: &usbotg_fs {
+	pinctrl-0 = <&usb_otg_fs_dm_pa11 &usb_otg_fs_dp_pa12>;
+	pinctrl-names = "default";
+	status = "okay";
+};
 
 &spi1 {
 	pinctrl-0 = <&spi1_nss_pa4 &spi1_sck_pa5
@@ -180,28 +124,28 @@
 	status = "okay";
 };
 
-&dac1 {
-	/* CAUTION: DAC on PA4 may conflict with SPI1 NSS on same pin */
-	pinctrl-0 = <&dac1_out1_pa4>;
-	pinctrl-names = "default";
-	status = "okay";
-};
+// &dac1 {
+// 	/* CAUTION: DAC on PA4 may conflict with SPI1 NSS on same pin */
+// 	pinctrl-0 = <&dac1_out1_pa4>;
+// 	pinctrl-names = "default";
+// 	status = "okay";
+// };
 
-&adc1 {
-	pinctrl-0 = <&adc1_in1_pc0>;
-	pinctrl-names = "default";
-	st,adc-clock-source = <ASYNC>;
-	st,adc-prescaler = <4>;
-	status = "okay";
-};
+// &adc1 {
+// 	pinctrl-0 = <&adc1_in1_pc0>;
+// 	pinctrl-names = "default";
+// 	st,adc-clock-source = <ASYNC>;
+// 	st,adc-prescaler = <4>;
+// 	status = "okay";
+// };
 
-&adc4 {
-	pinctrl-0 = <&adc4_in18_pb0>;
-	pinctrl-names = "default";
-	st,adc-clock-source = <ASYNC>;
-	st,adc-prescaler = <4>;
-	status = "okay";
-};
+// &adc4 {
+// 	pinctrl-0 = <&adc4_in18_pb0>;
+// 	pinctrl-names = "default";
+// 	st,adc-clock-source = <ASYNC>;
+// 	st,adc-prescaler = <4>;
+// 	status = "okay";
+// };
 
 &timers3 {
 	st,prescaler = <10000>;
@@ -225,32 +169,38 @@
 	};
 };
 
-&iwdg {
-	status = "okay";
-};
+// &iwdg {
+// 	status = "okay";
+// };
 
-&rng {
-	status = "okay";
-};
+// &rng {
+// 	status = "okay";
+// };
 
-&fdcan1 {
-	clocks = <&rcc STM32_CLOCK_BUS_APB1_2 0x00000200>,
-			 <&rcc STM32_SRC_PLL1_Q FDCAN1_SEL(1)>;
-	pinctrl-0 = <&fdcan1_rx_pd0 &fdcan1_tx_pd1>;
-	pinctrl-names = "default";
-	bus-speed = <125000>;
-	bus-speed-data = <1000000>;
-	status = "okay";
-};
+// &fdcan1 {
+// 	clocks = <&rcc STM32_CLOCK_BUS_APB1_2 0x00000200>,
+// 		 <&rcc STM32_SRC_PLL1_Q FDCAN1_SEL(1)>;
+// 	pinctrl-0 = <&fdcan1_rx_pd0 &fdcan1_tx_pd1>;
+// 	pinctrl-names = "default";
+// 	bus-speed = <125000>;
+// 	bus-speed-data = <1000000>;
+// 	status = "okay";
+// };
 
-&vref1 {
-	status = "okay";
-};
+// &vref1 {
+// 	status = "okay";
+// };
 
-&vbat4 {
-	status = "okay";
-};
+// &vbat4 {
+// 	status = "okay";
+// };
 
+// &usb_otg_fs {
+//     status = "okay";
+//     dr_mode = "device";  // Set to "host" if using USB in host mode
+//     pinctrl-0 = <&usb_otg_fs_pins>;
+//     pinctrl-names = "default";
+// };
 
 &flash0 {
 	/*
@@ -269,3 +219,59 @@
 		};
 	};
 };
+
+
+
+// zephyr_udc0: &usb {
+// 	status = "okay";
+
+// 	pinctrl-0 = <&usb_dm_pa11 &usb_dp_pa12>;
+// 	pinctrl-names = "default";
+
+// 	num-bidir-endpoints = <6>;
+
+// 	cdc_acm_uart: cdc_acm_uart {
+// 		compatible = "zephyr,cdc-acm-uart";
+// 		label = "CDC_ACM_0";
+// 	};
+// };
+
+// &clk_hsi {
+// 	status = "okay";
+// };
+
+// &clk_hsi48 {
+// 	status = "okay";
+// };
+
+// &pll {
+// 	prediv = <1>;
+// 	mul = <6>;
+// 	clocks = <&clk_hsi>;
+// 	status = "okay";
+// };
+
+// &rcc {
+// 	clocks = <&pll>;
+// 	clock-frequency = <DT_FREQ_M(48)>;
+// 	ahb-prescaler = <1>;
+// 	apb1-prescaler = <1>;
+// };
+
+
+// &rtc {
+// 	status = "okay";
+// };
+
+// &lpuart1 {
+// 	pinctrl-0 = <&lpuart1_tx_pg7 &lpuart1_rx_pg8>;
+// 	pinctrl-names = "default";
+// 	current-speed = <115200>;
+// 	status = "okay";
+// };
+// &i2c2 {
+// 	pinctrl-0 = <&i2c2_scl_pf1 &i2c2_sda_pf0>;
+// 	pinctrl-names = "default";
+// 	status = "okay";
+// 	clock-frequency = <I2C_BITRATE_FAST>;
+// };
