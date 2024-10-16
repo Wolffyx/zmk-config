@@ -79,7 +79,7 @@
  */
 
 /dts-v1/;
-#include <st/f0/stm32u575.dtsi>
+#include <st/u5/stm32u575.dtsi>
 //#include <st/f0/stm32f072v(8-b)tx-pinctrl.dtsi>
 
 #include <dt-bindings/zmk/matrix_transform.h>
